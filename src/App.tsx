@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Home } from "./pages/home";
 import { device } from "./utils/device";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { CreateGame } from "./pages/create-game";
 
 const AppContainer = styled.div`
   background-color: #f1f5f9;
@@ -31,6 +32,10 @@ function App() {
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/create-game",
+      element: <CreateGame />,
     },
   ]);
   return (
