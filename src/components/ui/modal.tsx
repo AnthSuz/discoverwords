@@ -5,8 +5,9 @@ import { device } from "../../utils/device";
 
 interface ModalProps {
   title?: string;
-  children?: ReactElement;
+  children?: ReactElement | ReactElement[];
   closeModal: () => void;
+  label?: string;
 }
 
 const ModalContainer = styled.div`
@@ -40,6 +41,7 @@ const ModalHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 24px;
 `;
 
 const ModalTitle = styled.h2`
@@ -50,9 +52,9 @@ const CloseIcon = styled(X)`
   cursor: pointer;
 `;
 
-export const Modal = ({ title, children, closeModal }: ModalProps) => {
+export const Modal = ({ title, children, closeModal, label }: ModalProps) => {
   return (
-    <ModalContainer onClick={closeModal}>
+    <ModalContainer onClick={closeModal} aria-label={label}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
