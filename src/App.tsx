@@ -1,14 +1,17 @@
 import "./App.css";
 import styled from "styled-components";
-import { Home } from "./pages/home";
+import { Home } from "./pages/home/home";
 import { device } from "./utils/device";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { CreateGame } from "./pages/create-game";
+import { CreateGame } from "./pages/create-game/create-game";
+import { createContext, useState } from "react";
+import React from "react";
 
 const AppContainer = styled.div`
   background-color: #f1f5f9;
   height: 100svh;
   display: flex;
+  justify-content: center;
 `;
 
 const AppContent = styled.div`
@@ -27,7 +30,37 @@ const AppContent = styled.div`
   }
 `;
 
-function App() {
+export interface Player {
+  id: number;
+  role: "courteous" | "impostor" | "cheater";
+  name: string;
+  assignedWord: string;
+  order?: number;
+}
+interface GameType {
+  players: Player[];
+  numberPlayer: number;
+}
+
+export interface ContextType {
+  game: GameType;
+  setGame: React.Dispatch<React.SetStateAction<GameType>>;
+}
+export const PlayerContext = createContext<ContextType | null>(null);
+
+const App = () => {
+  const [game, setGame] = useState<GameType>({
+    players: [
+      {
+        id: 0,
+        role: "cheater",
+        name: "Anthony",
+        assignedWord: "Maison",
+      },
+    ],
+    numberPlayer: 0,
+  });
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -39,13 +72,20 @@ function App() {
     },
   ]);
   return (
-    <AppContainer>
-      <AppContent>
-        <h1 style={{ textAlign: "center" }}>Discover Words</h1>
-        <RouterProvider router={router} />
-      </AppContent>
-    </AppContainer>
+    <PlayerContext.Provider
+      value={{
+        game,
+        setGame,
+      }}
+    >
+      <AppContainer>
+        <AppContent>
+          <h1 style={{ textAlign: "center" }}>Discover Words</h1>
+          <RouterProvider router={router} />
+        </AppContent>
+      </AppContainer>
+    </PlayerContext.Provider>
   );
-}
+};
 
 export default App;
