@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Button = styled.button`
@@ -43,4 +44,10 @@ export const CheaterStyle = styled(PlayerStyle)`
   padding: 4px 16px;
   box-shadow: 0px 3px 8px 0px #e8e9ea;
   cursor: pointer;
+`;
+
+export const LinkButton = styled(Link)`
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
 `;
