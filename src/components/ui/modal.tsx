@@ -5,9 +5,12 @@ import { device } from "../../utils/device";
 
 interface ModalProps {
   title?: string;
-  children?: ReactElement | ReactElement[];
-  closeModal: () => void;
+  children: ReactElement | ReactElement[];
+  closeModal?: () => void;
   label?: string;
+  hideCloseButton?: boolean;
+  type?: "modal" | "alert";
+  bgColor?: string;
 }
 
 const ModalContainer = styled.div`
@@ -23,8 +26,8 @@ const ModalContainer = styled.div`
   align-items: center;
 `;
 
-const ModalContent = styled.div`
-  min-height: 50%;
+const ModalContent = styled.div<{ $type?: string; $bgColor: string }>`
+  min-height: ${(props) => (props.$type === "alert" ? "20%" : "50%")};
   max-height: 80%;
   width: 80%;
   @media ${device.mobile} {
@@ -32,7 +35,7 @@ const ModalContent = styled.div`
   }
   position: absolute;
   z-index: 50;
-  background-color: white;
+  background-color: ${(props) => props.$bgColor};
   border-radius: 8px;
   padding: 16px;
 `;
@@ -52,14 +55,28 @@ const CloseIcon = styled(X)`
   cursor: pointer;
 `;
 
-export const Modal = ({ title, children, closeModal, label }: ModalProps) => {
+export const Modal = ({
+  title,
+  children,
+  closeModal,
+  label,
+  hideCloseButton = false,
+  type = "modal",
+  bgColor = "white",
+}: ModalProps) => {
   return (
     <ModalContainer onClick={closeModal} aria-label={label}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        <ModalHeader>
-          <ModalTitle>{title}</ModalTitle>
-          <CloseIcon onClick={closeModal} />
-        </ModalHeader>
+      <ModalContent
+        onClick={(e) => e.stopPropagation()}
+        $type={type}
+        $bgColor={bgColor}
+      >
+        {title && (
+          <ModalHeader>
+            <ModalTitle>{title}</ModalTitle>
+            {!hideCloseButton && <CloseIcon onClick={closeModal} />}
+          </ModalHeader>
+        )}
         {children}
       </ModalContent>
     </ModalContainer>
