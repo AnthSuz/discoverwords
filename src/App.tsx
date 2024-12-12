@@ -30,13 +30,21 @@ const AppContent = styled.div`
   }
 `;
 
-export interface Player {
+export type Player = {
   id: number;
-  role: "courteous" | "impostor" | "cheater";
+  role: string | "courteous" | "impostor" | "cheater";
   name: string;
   assignedWord: string;
-  order?: number;
-}
+  eliminated: boolean;
+  point: number;
+  color?: string;
+};
+
+export type Ranking = {
+  name: string;
+  points: number;
+};
+
 interface GameType {
   players: Player[];
   numberPlayer: number;
@@ -56,6 +64,8 @@ const App = () => {
         role: "cheater",
         name: "Anthony",
         assignedWord: "Maison",
+        eliminated: false,
+        point: 0,
       },
     ],
     numberPlayer: 0,

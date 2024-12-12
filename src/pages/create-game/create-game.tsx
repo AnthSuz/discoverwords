@@ -240,6 +240,8 @@ export const CreateGame = () => {
           id: b,
           role: roles[b],
           name: ``,
+          eliminated: false,
+          point: 0,
           assignedWord:
             roles[b] === "courteous"
               ? word.courteous
