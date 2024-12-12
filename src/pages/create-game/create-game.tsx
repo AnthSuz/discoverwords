@@ -8,8 +8,9 @@ import {
   LinkButton,
 } from "../../utils/styled";
 import { device } from "../../utils/device";
-import { PlayerContext } from "../../App";
+import { Player, PlayerContext } from "../../App";
 import { BadgePlus, BadgeMinus, CirclePlus, CircleMinus } from "lucide-react";
+import wordFile from "../../utils/courteous_impostor_combinations_corrected.json";
 
 const CreateGameContainer = styled.div`
   display: grid;
@@ -110,7 +111,7 @@ interface Players {
 }
 
 export const CreateGame = () => {
-  const { game, setGame }: any = useContext(PlayerContext);
+  const { setGame }: any = useContext(PlayerContext);
 
   const [countPlayer, setCountPlayer] = useState<number>(5);
   const [players, setPlayers] = useState<Players>({
@@ -223,11 +224,9 @@ export const CreateGame = () => {
 
   // ----- -----
 
-  const generatePlayers = useCallback(() => {
-    const word: { courteous: string; impostor: string } = {
-      courteous: "oignon",
-      impostor: "ail",
-    };
+  const generatePlayers = useCallback((): Player[] => {
+    const word: { courteous: string; impostor: string } =
+      wordFile[Math.floor(Math.random() * 999)];
 
     const roles: string[] = [
       Array.from({ length: players.courteous }).map((_) => "courteous"),
@@ -235,19 +234,21 @@ export const CreateGame = () => {
       Array.from({ length: players.cheater }).map((_) => "cheater"),
     ].flat();
 
-    const newPlayers = Array.from({ length: countPlayer }).map((a, b) => {
-      return {
-        id: b,
-        role: roles[b],
-        name: ``,
-        word:
-          roles[b] === "courteous"
-            ? word.courteous
-            : roles[b] === "impostor"
-            ? word.impostor
-            : "",
-      };
-    });
+    const newPlayers: Player[] = Array.from({ length: countPlayer }).map(
+      (a, b) => {
+        return {
+          id: b,
+          role: roles[b],
+          name: ``,
+          assignedWord:
+            roles[b] === "courteous"
+              ? word.courteous
+              : roles[b] === "impostor"
+              ? word.impostor
+              : "",
+        };
+      }
+    );
 
     const shuffle = (array: any[]) => {
       for (let i = array.length - 1; i > 0; i--) {

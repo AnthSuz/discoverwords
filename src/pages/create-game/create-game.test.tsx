@@ -17,6 +17,7 @@ describe("CreateGamePage", () => {
           game: {
             players: [],
             numberPlayer: 5,
+            ranked: [],
           },
           setGame: () => [],
         }}
@@ -55,6 +56,7 @@ describe("CreateGamePage", () => {
           game: {
             players: [],
             numberPlayer: 5,
+            ranked: [],
           },
           setGame: () => [],
         }}
@@ -88,6 +90,7 @@ describe("CreateGamePage", () => {
           game: {
             players: [],
             numberPlayer: 5,
+            ranked: [],
           },
           setGame: () => [],
         }}
@@ -120,6 +123,7 @@ describe("CreateGamePage", () => {
           game: {
             players: [],
             numberPlayer: 5,
+            ranked: [],
           },
           setGame: () => [],
         }}
@@ -156,6 +160,7 @@ describe("CreateGamePage", () => {
           game: {
             players: [],
             numberPlayer: 5,
+            ranked: [],
           },
           setGame: () => [],
         }}
