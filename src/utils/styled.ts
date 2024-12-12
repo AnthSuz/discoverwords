@@ -11,6 +11,7 @@ export const Button = styled.button`
   font-weight: 500;
   letter-spacing: 4px;
   color: #595959;
+  text-transform: uppercase;
 
   &:hover {
     box-shadow: 0px 3px 8px 0px #e8e9ea;

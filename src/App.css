@@ -23,3 +23,7 @@ input[type="number"] {
 p {
   margin: 0;
 }
+
+input {
+  outline: none;
+}
