@@ -13,7 +13,7 @@ const TitleSlide = styled.h3`
 `;
 
 interface RulesModalType {
-  closeModal: () => void;
+  closeModal: (modal: "rulesModal" | "contactModal") => void;
 }
 
 export const RulesModal = ({ closeModal }: RulesModalType) => {
@@ -30,7 +30,11 @@ export const RulesModal = ({ closeModal }: RulesModalType) => {
     ),
   };
   return (
-    <Modal label="rules-modal" title="Bienvenue !" closeModal={closeModal}>
+    <Modal
+      label="rules-modal"
+      title="Bienvenue !"
+      closeModal={() => closeModal("rulesModal")}
+    >
       <Slider {...settings} arrows={false}>
         <SlideItem>
           <p>

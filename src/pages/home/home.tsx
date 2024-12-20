@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { Button, LinkButton } from "../../utils/styled";
 import { RulesModal } from "../../components/rulesModal";
+import { ContactModal } from "../../components/contactModal";
 
 const HomeContainer = styled.div`
   display: grid;
@@ -34,10 +35,20 @@ const TextButton = styled.button`
 `;
 
 export const Home = () => {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<{
+    rulesModal: boolean;
+    contactModal: boolean;
+  }>({
+    rulesModal: false,
+    contactModal: false,
+  });
 
-  const closeModal = () => {
-    setShowModal(false);
+  const openModal = (modal: "rulesModal" | "contactModal") => {
+    setShowModal((prev) => ({ ...prev, [modal]: true }));
+  };
+
+  const closeModal = (modal: "rulesModal" | "contactModal") => {
+    setShowModal((prev) => ({ ...prev, [modal]: false }));
   };
 
   return (
@@ -49,14 +60,19 @@ export const Home = () => {
           </LinkButton>
         </HomeContent>
         <Footer>
-          <TextButton onClick={() => setShowModal(true)}>Règles</TextButton>
+          <TextButton onClick={() => openModal("rulesModal")}>
+            Règles
+          </TextButton>
           <p>-</p>
-          <TextButton>Contact</TextButton>
+          <TextButton onClick={() => openModal("contactModal")}>
+            Contact
+          </TextButton>
           <p>-</p>
           <TextButton>Patch note</TextButton>
         </Footer>
       </HomeContainer>
-      {showModal && <RulesModal closeModal={closeModal} />}
+      {showModal.rulesModal && <RulesModal closeModal={closeModal} />}
+      {showModal.contactModal && <ContactModal closeModal={closeModal} />}
     </>
   );
 };

@@ -38,6 +38,7 @@ const ModalContent = styled.div<{ $type?: string; $bgColor: string }>`
   background-color: ${(props) => props.$bgColor};
   border-radius: 8px;
   padding: 16px;
+  overflow: scroll;
 `;
 
 const ModalHeader = styled.header`
