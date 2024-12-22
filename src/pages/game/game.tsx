@@ -5,6 +5,10 @@ import { device } from "../../utils/device";
 import { ReactComponent as Target } from "../../utils/icons/target.svg";
 import { getRoles } from "../../utils/function";
 import { HeaderGame } from "./headerGame";
+import { Button } from "../../utils/styled";
+import { ReactComponent as EyeClosed } from "../../utils/icons/eye-closed.svg";
+import { ReactComponent as EyeOpen } from "../../utils/icons/eye.svg";
+import { ReactComponent as Table } from "../../utils/icons/table.svg";
 
 const GameContainer = styled.div`
   display: flex;
@@ -98,6 +102,34 @@ const EliminateTag = styled.div<{ $visible?: boolean }>`
   margin-inline: auto;
   width: fit-content;
   visibility: ${(props) => (props.$visible ? "initial" : "hidden")};
+`;
+
+const Footer = styled.footer`
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 8px;
+
+  @media ${device.mobile} {
+    padding-top: 0;
+  }
+
+  & div {
+    margin: 8px 0;
+
+    & svg {
+      /* border: 1px solid red; */
+      background-color: #808080;
+      margin: 0 16px;
+      border-radius: 8px;
+      padding: 4px;
+      height: 32px;
+      width: 32px;
+      stroke: white;
+    }
+  }
 `;
 
 export interface PlayerGame extends Player {
@@ -292,6 +324,38 @@ export const Game = () => {
             </div>
           ))}
         </PlayersContainer>
+        {stepGame !== "start" && (
+          <Footer>
+            {stepGame === "description" && (
+              <Button
+                onClick={() => {
+                  setStepGame("elimination");
+                  console.log("players", game.players);
+                }}
+              >
+                Passer au vote
+              </Button>
+            )}
+            {stepGame !== "description" && (
+              <Button
+                onClick={() => {
+                  setStepGame("description");
+                }}
+              >
+                Revenir à la partie
+              </Button>
+            )}
+            <div>
+              {/* <Arrow /> Add to next version */}
+              <Table />
+              {stepGame === "amnesiac" ? (
+                <EyeOpen onClick={() => setStepGame("description")} />
+              ) : (
+                <EyeClosed onClick={() => setStepGame("amnesiac")} />
+              )}
+            </div>
+          </Footer>
+        )}
       </GameContainer>
     </>
   );
