@@ -10,6 +10,7 @@ import { ReactComponent as EyeClosed } from "../../utils/icons/eye-closed.svg";
 import { ReactComponent as EyeOpen } from "../../utils/icons/eye.svg";
 import { ReactComponent as Table } from "../../utils/icons/table.svg";
 import { RegisterPlayerModal } from "../../components/registerPlayerModal";
+import { AlertTurnPlayer } from "../../components/alertTurnPlayer";
 
 const GameContainer = styled.div`
   display: flex;
@@ -143,8 +144,10 @@ export const Game = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player>();
   const [showModal, setShowModal] = useState<{
     registerPlayerModal: boolean;
+    alertTurnPlayer: boolean;
   }>({
     registerPlayerModal: false,
+    alertTurnPlayer: false,
   });
   const [nextPlayer, setNextPlayer] = useState<number>(0);
   const [stepGame, setStepGame] = useState<
@@ -198,6 +201,13 @@ export const Game = () => {
     },
     [selectedPlayer, game.players, setGame]
   );
+
+  const closeGenericAlertOrModel = (name: string) => {
+    setShowModal((prev) => ({
+      ...prev,
+      [name]: false,
+    }));
+  };
 
   useEffect(() => {
     const copyPlayers = [...game.players].map((player) => ({
@@ -409,6 +419,12 @@ export const Game = () => {
         <RegisterPlayerModal
           player={selectedPlayer as Player}
           confirmRegisterModal={closeRegisterNameModal}
+        />
+      )}
+      {showModal.alertTurnPlayer && (
+        <AlertTurnPlayer
+          closeAlertTurnPlayer={closeGenericAlertOrModel}
+          nextPlayer={nextPlayer}
         />
       )}
     </>
