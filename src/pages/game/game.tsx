@@ -12,6 +12,7 @@ import { ReactComponent as Table } from "../../utils/icons/table.svg";
 import { RegisterPlayerModal } from "../../components/registerPlayerModal";
 import { AlertTurnPlayer } from "../../components/alertTurnPlayer";
 import { AlertConfirmEliminatedPlayer } from "../../components/alertConfirmEliminatedPlayer";
+import { RankGameModal } from "../../components/rankGameModal";
 
 const GameContainer = styled.div`
   display: flex;
@@ -147,10 +148,12 @@ export const Game = () => {
     registerPlayerModal: boolean;
     alertTurnPlayer: boolean;
     alertConfirmEliminatedPlayer: boolean;
+    rankGameModal: boolean;
   }>({
     registerPlayerModal: false,
     alertTurnPlayer: false,
     alertConfirmEliminatedPlayer: false,
+    rankGameModal: false,
   });
   const [nextPlayer, setNextPlayer] = useState<number>(0);
   const [stepGame, setStepGame] = useState<
@@ -431,7 +434,14 @@ export const Game = () => {
             )}
             <div>
               {/* <Arrow /> Add to next version */}
-              <Table />
+              <Table
+                onClick={() => {
+                  setShowModal((prevState) => ({
+                    ...prevState,
+                    rankGameModal: true,
+                  }));
+                }}
+              />
               {stepGame === "amnesiac" ? (
                 <EyeOpen onClick={() => setStepGame("description")} />
               ) : (
@@ -458,6 +468,12 @@ export const Game = () => {
           closeAlertConfirmEliminatedPlayer={closeGenericAlertOrModel}
           selectedPlayer={selectedPlayer as Player}
           getWinner={getWinner}
+        />
+      )}
+      {showModal.rankGameModal && (
+        <RankGameModal
+          closeRankGame={closeGenericAlertOrModel}
+          players={game.players}
         />
       )}
     </>
