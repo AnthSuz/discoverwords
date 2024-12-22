@@ -378,6 +378,29 @@ export const Game = () => {
           {game.players.map((player: PlayerGame, index: number) => (
             <div style={{ maxHeight: "fit-content", position: "relative" }}>
               <PlayerCard
+                onClick={(e) => {
+                  if (stepGame === "start" && player.name !== "") return;
+                  e.preventDefault();
+                  if (stepGame === "start") {
+                    setSelectedPlayer(player);
+                    setShowModal((prev) => ({
+                      ...prev,
+                      registerPlayerModal: true,
+                    }));
+                  } else if (stepGame === "elimination") {
+                    setSelectedPlayer(player);
+                    setShowModal((prev) => ({
+                      ...prev,
+                      alertConfirmEliminatedPlayer: true,
+                    }));
+                  } else if (stepGame === "amnesiac") {
+                    setSelectedPlayer(player);
+                    setShowModal((prev) => ({
+                      ...prev,
+                      alertConfirmPlayer: true,
+                    }));
+                  }
+                }}
                 key={index}
                 $bgColor={player.color}
                 $eliminated={player.eliminated}
