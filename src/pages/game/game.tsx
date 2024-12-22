@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { ContextType, Player, PlayerContext } from "../../App";
 import styled from "styled-components";
 import { device } from "../../utils/device";
@@ -9,6 +9,7 @@ import { Button } from "../../utils/styled";
 import { ReactComponent as EyeClosed } from "../../utils/icons/eye-closed.svg";
 import { ReactComponent as EyeOpen } from "../../utils/icons/eye.svg";
 import { ReactComponent as Table } from "../../utils/icons/table.svg";
+import { RegisterPlayerModal } from "../../components/registerPlayerModal";
 
 const GameContainer = styled.div`
   display: flex;
@@ -139,6 +140,12 @@ export interface PlayerGame extends Player {
 export const Game = () => {
   const { game, setGame } = useContext(PlayerContext) as ContextType;
 
+  const [selectedPlayer, setSelectedPlayer] = useState<Player>();
+  const [showModal, setShowModal] = useState<{
+    registerPlayerModal: boolean;
+  }>({
+    registerPlayerModal: false,
+  });
   const [nextPlayer, setNextPlayer] = useState<number>(0);
   const [stepGame, setStepGame] = useState<
     "start" | "description" | "elimination" | "amnesiac"
@@ -156,6 +163,41 @@ export const Game = () => {
     "15, 113, 100",
     "11, 166, 121",
   ];
+
+  const registerName = useCallback(() => {
+    const playerWithName = game.players.filter(
+      (player) => player.name !== ""
+    ).length;
+
+    if (playerWithName === game.players.length) {
+      setStepGame("description");
+    } else {
+      setNextPlayer(playerWithName + 1);
+      setShowModal((prev) => ({
+        ...prev,
+        alertTurnPlayer: true,
+      }));
+    }
+  }, [game.players]);
+
+  const closeRegisterNameModal = useCallback(
+    (name: string) => {
+      const copyPlayers = [...game.players];
+      copyPlayers.find((player) => player.id === selectedPlayer!.id)!.name =
+        name;
+
+      setGame((prevState) => ({
+        ...prevState,
+        players: copyPlayers,
+      }));
+      setShowModal((prev) => ({
+        ...prev,
+        registerPlayerModal: false,
+      }));
+      registerName();
+    },
+    [selectedPlayer, game.players, setGame]
+  );
 
   useEffect(() => {
     const copyPlayers = [...game.players].map((player) => ({
@@ -279,6 +321,12 @@ export const Game = () => {
       ...prevState,
       players: copyPlayers,
     }));
+
+    const timeoutId = setTimeout(() => {
+      registerName();
+    }, 200);
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
@@ -357,6 +405,12 @@ export const Game = () => {
           </Footer>
         )}
       </GameContainer>
+      {showModal.registerPlayerModal && (
+        <RegisterPlayerModal
+          player={selectedPlayer as Player}
+          confirmRegisterModal={closeRegisterNameModal}
+        />
+      )}
     </>
   );
 };

@@ -35,7 +35,7 @@ const ModalContent = styled.div<{ $type?: string; $bgColor: string }>`
   }
   position: absolute;
   z-index: 50;
-  background-color: ${(props) => props.$bgColor};
+  background-color: rgba(${(props) => props.$bgColor}, 1);
   border-radius: 8px;
   padding: 16px;
   overflow: scroll;
@@ -63,7 +63,7 @@ export const Modal = ({
   label,
   hideCloseButton = false,
   type = "modal",
-  bgColor = "white",
+  bgColor = "255, 255, 255",
 }: ModalProps) => {
   return (
     <ModalContainer onClick={closeModal} aria-label={label}>
