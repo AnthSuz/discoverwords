@@ -13,6 +13,7 @@ import { RegisterPlayerModal } from "../../components/registerPlayerModal";
 import { AlertTurnPlayer } from "../../components/alertTurnPlayer";
 import { AlertConfirmEliminatedPlayer } from "../../components/alertConfirmEliminatedPlayer";
 import { RankGameModal } from "../../components/rankGameModal";
+import { AlertConfirmSelectedPlayer } from "../../components/alertConfirmSelectedPlayer";
 
 const GameContainer = styled.div`
   display: flex;
@@ -124,7 +125,6 @@ const Footer = styled.footer`
     margin: 8px 0;
 
     & svg {
-      /* border: 1px solid red; */
       background-color: #808080;
       margin: 0 16px;
       border-radius: 8px;
@@ -149,11 +149,13 @@ export const Game = () => {
     alertTurnPlayer: boolean;
     alertConfirmEliminatedPlayer: boolean;
     rankGameModal: boolean;
+    alertConfirmPlayer: boolean;
   }>({
     registerPlayerModal: false,
     alertTurnPlayer: false,
     alertConfirmEliminatedPlayer: false,
     rankGameModal: false,
+    alertConfirmPlayer: false,
   });
   const [nextPlayer, setNextPlayer] = useState<number>(0);
   const [stepGame, setStepGame] = useState<
@@ -474,6 +476,19 @@ export const Game = () => {
         <RankGameModal
           closeRankGame={closeGenericAlertOrModel}
           players={game.players}
+        />
+      )}
+      {showModal.alertConfirmPlayer && (
+        <AlertConfirmSelectedPlayer
+          name={selectedPlayer!.name}
+          color={selectedPlayer!.color as string}
+          closeAlertConfirmPlayer={closeGenericAlertOrModel}
+          onConfirm={() => {
+            setShowModal((prev) => ({
+              ...prev,
+              registerPlayerModal: true,
+            }));
+          }}
         />
       )}
     </>
