@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CreateGame } from "./pages/create-game/create-game";
 import { createContext, useState } from "react";
 import React from "react";
+import { Game } from "./pages/game/game";
 
 const AppContainer = styled.div`
   background-color: #f1f5f9;
@@ -79,6 +80,10 @@ const App = () => {
     {
       path: "/create-game",
       element: <CreateGame />,
+    },
+    {
+      path: "/game",
+      element: <Game />,
     },
   ]);
   return (
