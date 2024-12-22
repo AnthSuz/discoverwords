@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { device } from "../../utils/device";
 import { ReactComponent as Target } from "../../utils/icons/target.svg";
 import { getRoles } from "../../utils/function";
+import { HeaderGame } from "./headerGame";
 
 const GameContainer = styled.div`
   display: flex;
@@ -106,6 +107,7 @@ export interface PlayerGame extends Player {
 export const Game = () => {
   const { game, setGame } = useContext(PlayerContext) as ContextType;
 
+  const [nextPlayer, setNextPlayer] = useState<number>(0);
   const [stepGame, setStepGame] = useState<
     "start" | "description" | "elimination" | "amnesiac"
   >("start");
@@ -250,6 +252,7 @@ export const Game = () => {
   return (
     <>
       <GameContainer>
+        <HeaderGame stepGame={stepGame} nextPlayer={nextPlayer} />
         <PlayersContainer>
           {game.players.map((player: PlayerGame, index: number) => (
             <div style={{ maxHeight: "fit-content", position: "relative" }}>
