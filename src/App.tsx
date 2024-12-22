@@ -19,7 +19,7 @@ const AppContent = styled.div`
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;
 
   @media ${device.desktop} {
     width: 50%;
@@ -90,7 +90,6 @@ const App = () => {
     >
       <AppContainer>
         <AppContent>
-          <h1 style={{ textAlign: "center" }}>Discover Words</h1>
           <RouterProvider router={router} />
         </AppContent>
       </AppContainer>

@@ -11,7 +11,7 @@ const HomeContainer = styled.div`
 
 const HomeContent = styled.div`
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: center;
 `;
 
@@ -54,6 +54,7 @@ export const Home = () => {
   return (
     <>
       <HomeContainer>
+        <h1 style={{ textAlign: "center" }}>Discover Words</h1>
         <HomeContent>
           <LinkButton to="create-game">
             <Button>PLAY</Button>
