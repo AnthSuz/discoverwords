@@ -11,6 +11,7 @@ import { ReactComponent as EyeOpen } from "../../utils/icons/eye.svg";
 import { ReactComponent as Table } from "../../utils/icons/table.svg";
 import { RegisterPlayerModal } from "../../components/registerPlayerModal";
 import { AlertTurnPlayer } from "../../components/alertTurnPlayer";
+import { AlertConfirmEliminatedPlayer } from "../../components/alertConfirmEliminatedPlayer";
 
 const GameContainer = styled.div`
   display: flex;
@@ -145,9 +146,11 @@ export const Game = () => {
   const [showModal, setShowModal] = useState<{
     registerPlayerModal: boolean;
     alertTurnPlayer: boolean;
+    alertConfirmEliminatedPlayer: boolean;
   }>({
     registerPlayerModal: false,
     alertTurnPlayer: false,
+    alertConfirmEliminatedPlayer: false,
   });
   const [nextPlayer, setNextPlayer] = useState<number>(0);
   const [stepGame, setStepGame] = useState<
@@ -208,6 +211,29 @@ export const Game = () => {
       [name]: false,
     }));
   };
+
+  const getWinner = useCallback(() => {
+    const { courteous, impostor, cheater } = game.players.reduce(
+      (acc, player) => {
+        if (!player.eliminated) {
+          if (player.role === "courteous") acc.courteous += 1;
+          if (player.role === "impostor") acc.impostor += 1;
+          if (player.role === "cheater") acc.cheater += 1;
+        }
+        return acc;
+      },
+      { courteous: 0, impostor: 0, cheater: 0 }
+    );
+
+    if (courteous === 1) {
+      alert("Impostor WINS!");
+    } else if (impostor === 0 && cheater === 0) {
+      alert("courteous WINS!");
+    } else {
+      setStepGame("description");
+      // alert("game continue");
+    }
+  }, [game.players]);
 
   useEffect(() => {
     const copyPlayers = [...game.players].map((player) => ({
@@ -425,6 +451,13 @@ export const Game = () => {
         <AlertTurnPlayer
           closeAlertTurnPlayer={closeGenericAlertOrModel}
           nextPlayer={nextPlayer}
+        />
+      )}
+      {showModal.alertConfirmEliminatedPlayer && (
+        <AlertConfirmEliminatedPlayer
+          closeAlertConfirmEliminatedPlayer={closeGenericAlertOrModel}
+          selectedPlayer={selectedPlayer as Player}
+          getWinner={getWinner}
         />
       )}
     </>
